@@ -1,0 +1,14 @@
+# acpi default event handler
+events/default
+
+# laptop-mode-tools
+events/lm_*
+actions/lm_*
+
+# power-management runlevels
+events/pmg_*
+actions/pmg_*
+
+# vi
+*.swp
+*~
