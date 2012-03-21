@@ -39,7 +39,7 @@ execute_command(){
 		sleep $TIMEOUT
 		STATUS=$(</proc/acpi/button/lid/LID/state)
 
-		if [ "${STATUS##* }" = "open" ]
+		if [ "${STATUS##* }" == "open" ]
 		then
 			$($log on-lid-close-action interrupted)
 		else
