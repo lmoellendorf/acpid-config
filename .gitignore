@@ -12,3 +12,6 @@ actions/pmg_*
 # vi
 *.swp
 *~
+
+# eclipse
+.project
