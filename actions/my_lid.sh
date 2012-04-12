@@ -5,7 +5,7 @@
 DISPLAY=":0.0"
 TIMEOUT="3"
 CLOSE=$3
-log="logger -t 'lid-action' -- "
+log="logger -t lid-action -- "
 xsu="su - lars -c "
 ##
 # your screen lock command:
