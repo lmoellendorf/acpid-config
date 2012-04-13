@@ -33,26 +33,26 @@ xsu () {
 }
 
 # pass the command you want to execute on lid close to this function
-execute_command(){
-	# this script only cares for LID close events
-	if [ "$CLOSE" == "close" ]
-	then
-		## now sleep for a while and then check if the user decided
-		## to open the lid again
-		#
-		#acpi_listen -t $TIMEOUT
-		# the above won't work since this script blocks acpid
-		# so acpi_listen would not report any events while this
-		# script is executed
-		sleep $TIMEOUT
-		STATUS=$(</proc/acpi/button/lid/LID/state)
+execute_command () {
+    # this script only cares for LID close events
+    if [ "$CLOSE" == "close" ]
+    then
+        ## now sleep for a while and then check if the user decided
+        ## to open the lid again
+        #
+        #acpi_listen -t $TIMEOUT
+        # the above won't work since this script blocks acpid
+        # so acpi_listen would not report any events while this
+        # script is executed
+        sleep $TIMEOUT
+        STATUS=$(</proc/acpi/button/lid/LID/state)
 
-		if [ "${STATUS##* }" == "open" ]
-		then
-			log "on-lid-close-action interrupted"
-		else
-			# lock screen
-			log "locking screen"
+        if [ "${STATUS##* }" == "open" ]
+        then
+            log "on-lid-close-action interrupted"
+        else
+            # lock screen
+            log "locking screen"
             xsu "DISPLAY=$DISPLAY $SCREEN_LOCK"
             # take action
             log "$@"
