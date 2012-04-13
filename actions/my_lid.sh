@@ -23,12 +23,13 @@ SCREEN_LOCK='enlightenment_remote -desktop-lock'
 # xdg-screensaver)
 #SCREEN_LOCK='xdg-screensaver lock'
 
-xsu () {
-    su - $XUSER -c "$@"
-}
-
 log (){
     logger -t lid-action -- "$@"
+}
+
+xsu () {
+    log "su - $XUSER -c \"$@\""
+    su - $XUSER -c "$@"
 }
 
 # pass the command you want to execute on lid close to this function
@@ -52,11 +53,12 @@ execute_command(){
 		else
 			# lock screen
 			log "locking screen"
-			xsu "DISPLAY=$DISPLAY $SCREEN_LOCK"
-			# take action
-			"$@"
-		fi
-	fi
+            xsu "DISPLAY=$DISPLAY $SCREEN_LOCK"
+            # take action
+            log "$@"
+            "$@"
+        fi
+    fi
 }
 
 log "$@"
@@ -64,15 +66,15 @@ log "$@"
 on_ac_power
 if [ $? -ne 0 ]
 then
-	# BATTERY
-	log "on battery power"
-	# suspend to ram
-	execute_command pm-suspend
+    # BATTERY
+    log "on battery power"
+    # suspend to ram
+    execute_command pm-suspend
 else
-	# AC
-	log "on AC power"
+    # AC
+    log "on AC power"
     log "xsu \"xset -display $DISPLAY dpms force off\""
-	# switch-off screen
-	execute_command xsu "xset -display $DISPLAY dpms force off"
+    # switch-off screen
+    execute_command xsu "xset -display $DISPLAY dpms force off"
 fi
 
