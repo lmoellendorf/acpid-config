@@ -65,6 +65,7 @@ then
 else
 	# AC
 	$($log on AC power)
+    $($log $xsu "xset -display $DISPLAY dpms force off")
 	# switch-off screen
 	execute_command $($xsu "xset -display $DISPLAY dpms force off")
 fi
