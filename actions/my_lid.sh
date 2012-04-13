@@ -28,8 +28,8 @@ log (){
 }
 
 xsu () {
-    log "su $XUSER - -c \"$@\""
-    ERROR=$( { su $XUSER - -c "$@"; } 2>&1 )
+    log "su -c \"$@\" $XUSER - "
+    ERROR=$( { su -c "$@" $XUSER - ; } 2>&1 )
     log "$ERROR"
 }
 
@@ -74,7 +74,7 @@ then
 else
     # AC
     log "on AC power"
-    log "xsu \"xset -display $DISPLAY dpms force off\""
+    #log "xsu \"xset -display $DISPLAY dpms force off\""
     # switch-off screen
     execute_command xsu "xset -display $DISPLAY dpms force off"
 fi
