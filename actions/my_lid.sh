@@ -28,8 +28,9 @@ log (){
 }
 
 xsu () {
-    log "su - $XUSER -c \"$@\""
-    su $XUSER - -c "$@"
+    log "su $XUSER - -c \"$@\""
+    ERROR=$( { su $XUSER - -c "$@"; } 2>&1 )
+    log "$ERROR"
 }
 
 # pass the command you want to execute on lid close to this function
