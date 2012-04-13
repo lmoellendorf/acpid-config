@@ -29,7 +29,7 @@ log (){
 
 xsu () {
     log "su - $XUSER -c \"$@\""
-    su - $XUSER -c "$@"
+    su $XUSER - -c "$@"
 }
 
 # pass the command you want to execute on lid close to this function
