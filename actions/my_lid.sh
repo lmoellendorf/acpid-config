@@ -29,7 +29,7 @@ log (){
 
 xsu () {
     log "su -c \"$@\" $XUSER - "
-    ERROR=$( { su -c "$@" $XUSER - ; } 2>&1 )
+    ERROR=$( { su -c "$@" $XUSER ; } 2>&1 )
     log "$ERROR"
 }
 
