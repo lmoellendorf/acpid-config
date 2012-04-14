@@ -54,7 +54,7 @@ execute_command () {
         else
             # lock screen
             log "locking screen"
-            xsu "DISPLAY=$DISPLAY $SCREEN_LOCK"
+            xsu "DISPLAY=$DISPLAY DBUS_SESSION_BUS_ADDRESS=$DBUS_SESSION_BUS_ADDRESS DBUS_SESSION_BUS_PID=$DBUS_SESSION_BUS_PID $SCREEN_LOCK"
             # take action
             log "$@"
             "$@"
