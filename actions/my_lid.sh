@@ -56,7 +56,8 @@ execute_command () {
             log "locking screen"
             #xsu "DISPLAY=$DISPLAY DBUS_SESSION_BUS_ADDRESS=$DBUS_SESSION_BUS_ADDRESS DBUS_SESSION_BUS_PID=$DBUS_SESSION_BUS_PID $SCREEN_LOCK"
             log "sux lars $SCREEN_LOCK"
-            sux lars $SCREEN_LOCK
+            ERROR=$( { sux lars $SCREEN_LOCK ; } 2>&1 )
+            log $ERROR
             # take action
             log "$@"
             "$@"
