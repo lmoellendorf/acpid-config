@@ -11,7 +11,7 @@ XUSER="lars"
 # enlightenment)
 #SCREEN_LOCK='enlightenment_remote -desktop-lock'
 # or
-SCREEN_LOCK='dbus-send --print-reply=literal --dest=org.enlightenment.wm.service /org/enlightenment/wm/RemoteObject org.enlightenment.wm.Desktop.Lock'
+SCREEN_LOCK="dbus-send --print-reply=literal --dest=org.enlightenment.wm.service /org/enlightenment/wm/RemoteObject org.enlightenment.wm.Desktop.Lock"
 # kde-4)
 #SCREEN_LOCK='qdbus org.freedesktop.ScreenSaver /ScreenSaver Lock'
 # kde-3)
@@ -56,7 +56,7 @@ execute_command () {
             log "locking screen"
             #xsu "DISPLAY=$DISPLAY DBUS_SESSION_BUS_ADDRESS=$DBUS_SESSION_BUS_ADDRESS DBUS_SESSION_BUS_PID=$DBUS_SESSION_BUS_PID $SCREEN_LOCK"
             log "sux - lars $SCREEN_LOCK"
-            ERROR=$( { sux - lars "$SCREEN_LOCK" ; } 2>&1 )
+            ERROR=$( { sux - lars "\"$SCREEN_LOCK\"" ; } 2>&1 )
             log $ERROR
             # take action
             log "$@"
