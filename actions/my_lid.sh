@@ -29,6 +29,7 @@ log (){
 
 #
 getDBusSessionAddress () {
+    log "I am: $(whoami)"
     log "home is: $HOME"
     log "DBUS_SESSION_BUS_ADDRESS is: $DBUS_SESSION_BUS_ADDRESS"
     if [[ -z "$DBUS_SESSION_BUS_ADDRESS" ]]; then
