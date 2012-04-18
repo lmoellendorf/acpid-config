@@ -27,9 +27,20 @@ log (){
     logger -t lid-action -- "$@"
 }
 
+#
+getDBusSessionAddress () {
+    log "home is: $HOME"
+    if [[ -z "$DBUS_SESSION_BUS_ADDRESS" ]]; then # Looks like we are outside X
+        dbus_file=$(ls $HOME/.dbus/session-bus/ -t | head -1) # Get the latest file in session-bus directory
+        . "$HOME/.dbus/session-bus/$dbus_file" && export DBUS_SESSION_BUS_ADDRESS # and export a variable from it
+    fi
+    log "dbus session address is: $DBUS_SESSION_BUS_ADDRESS"
+}
+
 xsu () {
     log "su -c \"$@\" $XUSER - "
-    ERROR=$( { su -c "$@" $XUSER ; } 2>&1 )
+    getDBusSessionAddress
+    ERROR=$( { su -c DISPLAY=$DISPLAY "$@" $XUSER ; } 2>&1 )
     log "$ERROR"
 }
 
@@ -55,9 +66,11 @@ execute_command () {
             # lock screen
             log "locking screen"
             #xsu "DISPLAY=$DISPLAY DBUS_SESSION_BUS_ADDRESS=$DBUS_SESSION_BUS_ADDRESS DBUS_SESSION_BUS_PID=$DBUS_SESSION_BUS_PID $SCREEN_LOCK"
-            log "sux - lars $SCREEN_LOCK"
-            ERROR=$( { sux - lars -c "$SCREEN_LOCK" ; } 2>&1 )
-            log $ERROR
+            xsu "$SCREEN_LOCK"
+            #log "sux - lars $SCREEN_LOCK"
+            # Failed to open connection to "session" message bus: Unable to autolaunch a dbus-daemon without a $DISPLAY for X11
+            #ERROR=$( { sux - lars -c "$SCREEN_LOCK" ; } 2>&1 )
+            #log $ERROR
             # take action
             log "$@"
             "$@"
