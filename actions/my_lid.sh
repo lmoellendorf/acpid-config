@@ -44,10 +44,13 @@ getDBusSessionAddress () {
 }
 
 xsu () {
+    log "su -l $XUSER"
+    su -l $XUSER
     getDBusSessionAddress
-    log "su -l -c DISPLAY=$DISPLAY \"$@\" $XUSER"
-    ERROR=$( { su -l -c DISPLAY=$DISPLAY "$@" $XUSER ; } 2>&1 )
+    log "DISPLAY=$DISPLAY \"$@\""
+    ERROR=$( { DISPLAY=$DISPLAY "$@"; } 2>&1 )
     log "$ERROR"
+    exit
 }
 
 # pass the command you want to execute on lid close to this function
