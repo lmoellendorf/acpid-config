@@ -45,7 +45,8 @@ getDBusSessionAddress () {
 
 xsu () {
     log "su $XUSER"
-    su $XUSER
+    ERROR=$( { su $XUSER ; } 2>&1 )
+    log $ERROR
     log "I am: $(whoami)"
     log "home is: $HOME"
     log "DBUS_SESSION_BUS_ADDRESS is: $DBUS_SESSION_BUS_ADDRESS"
