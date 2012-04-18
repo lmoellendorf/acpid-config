@@ -54,7 +54,8 @@ xsu () {
     #    # and export a variable from it
     #fi
     #log "dbus session address is: $DBUS_SESSION_BUS_ADDRESS"
-    dbus_file=$(su -l -c "ls $HOME/.dbus/session-bus/ -t | head -1")
+    log "$(su -l -c \"echo home is: $HOME\")")"
+    dbus_file=$(su -l -c "ls $HOME/.dbus/session-bus/ -t | head -1" $XUSER)
     log "dbus file is: $dbus_file"
     log "source $HOME/.dbus/session-bus/$dbus_file"
     . "$HOME/.dbus/session-bus/$dbus_file" && export DBUS_SESSION_BUS_ADDRESS
