@@ -55,7 +55,7 @@ xsu () {
     #fi
     #log "dbus session address is: $DBUS_SESSION_BUS_ADDRESS"
     log "DISPLAY=$DISPLAY \"$@\""
-    ERROR=$( { su -l -c "DISPLAY=$DISPLAY \"$@\"" $XUSER; } 2>&1 )
+    ERROR=$( { su -l -c "DISPLAY=$DISPLAY $@" $XUSER; } 2>&1 )
     log "$ERROR"
     exit
 }
