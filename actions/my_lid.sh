@@ -44,24 +44,18 @@ getDBusSessionAddress () {
 }
 
 xsu () {
-    log "$(su $XUSER -c whoami)"
-    log "su $XUSER"
-    ERROR=$( { su $XUSER ; } 2>&1 )
-    log $ERROR
-    log "I am: $(whoami)"
-    log "home is: $HOME"
-    log "DBUS_SESSION_BUS_ADDRESS is: $DBUS_SESSION_BUS_ADDRESS"
-    if [[ -z "$DBUS_SESSION_BUS_ADDRESS" ]]; then
-        log "get dbus session address"
-        # Looks like we are outside X
-        dbus_file=$(ls $HOME/.dbus/session-bus/ -t | head -1)
-        # Get the latest file in session-bus directory
-        . "$HOME/.dbus/session-bus/$dbus_file" && export DBUS_SESSION_BUS_ADDRESS
-        # and export a variable from it
-    fi
-    log "dbus session address is: $DBUS_SESSION_BUS_ADDRESS"
+    log "Now I am $(su $XUSER -c whoami)"
+    #if [[ -z "$DBUS_SESSION_BUS_ADDRESS" ]]; then
+    #    log "get dbus session address"
+    #    # Looks like we are outside X
+    #    dbus_file=$(ls $HOME/.dbus/session-bus/ -t | head -1)
+    #    # Get the latest file in session-bus directory
+    #    . "$HOME/.dbus/session-bus/$dbus_file" && export DBUS_SESSION_BUS_ADDRESS
+    #    # and export a variable from it
+    #fi
+    #log "dbus session address is: $DBUS_SESSION_BUS_ADDRESS"
     log "DISPLAY=$DISPLAY \"$@\""
-    ERROR=$( { DISPLAY=$DISPLAY "$@"; } 2>&1 )
+    ERROR=$( { su -l -c "DISPLAY=$DISPLAY \"$@\"" $XUSER; } 2>&1 )
     log "$ERROR"
     exit
 }
