@@ -30,9 +30,14 @@ log (){
 #
 getDBusSessionAddress () {
     log "home is: $HOME"
-    if [[ -z "$DBUS_SESSION_BUS_ADDRESS" ]]; then # Looks like we are outside X
-        dbus_file=$(ls $HOME/.dbus/session-bus/ -t | head -1) # Get the latest file in session-bus directory
-        . "$HOME/.dbus/session-bus/$dbus_file" && export DBUS_SESSION_BUS_ADDRESS # and export a variable from it
+    log "DBUS_SESSION_BUS_ADDRESS is: $DBUS_SESSION_BUS_ADDRESS"
+    if [[ -z "$DBUS_SESSION_BUS_ADDRESS" ]]; then
+        log "get dbus session address"
+        # Looks like we are outside X
+        dbus_file=$(ls $HOME/.dbus/session-bus/ -t | head -1)
+        # Get the latest file in session-bus directory
+        . "$HOME/.dbus/session-bus/$dbus_file" && export DBUS_SESSION_BUS_ADDRESS
+        # and export a variable from it
     fi
     log "dbus session address is: $DBUS_SESSION_BUS_ADDRESS"
 }
