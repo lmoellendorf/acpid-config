@@ -44,8 +44,8 @@ getDBusSessionAddress () {
 }
 
 xsu () {
-    log "su -l $XUSER"
-    su -l $XUSER
+    log "su $XUSER"
+    su $XUSER
     getDBusSessionAddress
     log "DISPLAY=$DISPLAY \"$@\""
     ERROR=$( { DISPLAY=$DISPLAY "$@"; } 2>&1 )
