@@ -63,7 +63,6 @@ xsu () {
     log "DISPLAY=$DISPLAY \"$@\""
     ERROR=$( { su -l -c "DISPLAY=$DISPLAY $@" $XUSER; } 2>&1 )
     log "$ERROR"
-    exit
 }
 
 # pass the command you want to execute on lid close to this function
