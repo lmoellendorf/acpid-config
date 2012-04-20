@@ -44,24 +44,19 @@ getDBusSessionAddress () {
 }
 
 xsu () {
-    #if [[ -z "$DBUS_SESSION_BUS_ADDRESS" ]]; then
-    #    log "get dbus session address"
-    #    # Looks like we are outside X
-    #    dbus_file=$(ls $HOME/.dbus/session-bus/ -t | head -1)
-    #    # Get the latest file in session-bus directory
-    #    . "$HOME/.dbus/session-bus/$dbus_file" && export DBUS_SESSION_BUS_ADDRESS
-    #    # and export a variable from it
-    #fi
-    #log "dbus session address is: $DBUS_SESSION_BUS_ADDRESS"
-
-    home=$(grep $XUSER /etc/passwd)
-    home=${home#*:*:*:*:*:}
-    home=${home%:*}
-    log "home is: $home"
-    dbus_file=$(ls $home/.dbus/session-bus/ -t | head -1)
-    log "dbus file is: $dbus_file"
-    log "source $home/.dbus/session-bus/$dbus_file"
-    . "$home/.dbus/session-bus/$dbus_file" && export DBUS_SESSION_BUS_ADDRESS
+    if [[ -z "$DBUS_SESSION_BUS_ADDRESS" ]]; then
+        # Looks like we are outside X
+        home=$(grep $XUSER /etc/passwd)
+        home=${home#*:*:*:*:*:}
+        home=${home%:*}
+        log "home is: $home"
+        # Get the latest file in session-bus directory
+        dbus_file=$(ls $home/.dbus/session-bus/ -t | head -1)
+        log "dbus file is: $dbus_file"
+        # and export a variable from it
+        log "source $home/.dbus/session-bus/$dbus_file"
+        . "$home/.dbus/session-bus/$dbus_file" && export DBUS_SESSION_BUS_ADDRESS
+    fi
     log "dbus session address is: $DBUS_SESSION_BUS_ADDRESS"
     log "su -l -c \"DISPLAY=$DISPLAY $@\" $XUSER"
     ERROR=$( { su -l -c "DISPLAY=$DISPLAY $@" $XUSER; } 2>&1 )
