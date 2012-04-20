@@ -44,7 +44,6 @@ getDBusSessionAddress () {
 }
 
 xsu () {
-    log "Now I am $(su $XUSER -c whoami)"
     #if [[ -z "$DBUS_SESSION_BUS_ADDRESS" ]]; then
     #    log "get dbus session address"
     #    # Looks like we are outside X
@@ -54,13 +53,17 @@ xsu () {
     #    # and export a variable from it
     #fi
     #log "dbus session address is: $DBUS_SESSION_BUS_ADDRESS"
-    log "$(su -l -c \"echo home is: $HOME\")"
-    dbus_file=$(su -l -c "ls $HOME/.dbus/session-bus/ -t | head -1" $XUSER)
+
+    home=$(grep $XUSER /etc/passwd)
+    home=${home#*:*:*:*:*:}
+    home=${home%:*}
+    log "home is: $home"
+    dbus_file=$(ls $home/.dbus/session-bus/ -t | head -1)
     log "dbus file is: $dbus_file"
-    log "source $HOME/.dbus/session-bus/$dbus_file"
-    . "$HOME/.dbus/session-bus/$dbus_file" && export DBUS_SESSION_BUS_ADDRESS
+    log "source $home/.dbus/session-bus/$dbus_file"
+    . "$home/.dbus/session-bus/$dbus_file" && export DBUS_SESSION_BUS_ADDRESS
     log "dbus session address is: $DBUS_SESSION_BUS_ADDRESS"
-    log "DISPLAY=$DISPLAY \"$@\""
+    log "su -l -c \"DISPLAY=$DISPLAY $@\" $XUSER"
     ERROR=$( { su -l -c "DISPLAY=$DISPLAY $@" $XUSER; } 2>&1 )
     log "$ERROR"
 }
