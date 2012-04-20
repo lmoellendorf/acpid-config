@@ -3,15 +3,16 @@
 
 # default display on current host
 DISPLAY=":0.0"
+# time in seconds to wait after lid has been closed
 TIMEOUT="3"
-CLOSE=$3
+# your username FIXME: Is there a dynamic way to get a current X user?
 XUSER="lars"
 ##
 # your screen lock command:
 # enlightenment)
-#SCREEN_LOCK='enlightenment_remote -desktop-lock'
+SCREEN_LOCK='enlightenment_remote -desktop-lock'
 # or
-SCREEN_LOCK="dbus-send --print-reply=literal --dest=org.enlightenment.wm.service /org/enlightenment/wm/RemoteObject org.enlightenment.wm.Desktop.Lock"
+#SCREEN_LOCK="dbus-send --print-reply=literal --dest=org.enlightenment.wm.service /org/enlightenment/wm/RemoteObject org.enlightenment.wm.Desktop.Lock"
 # kde-4)
 #SCREEN_LOCK='qdbus org.freedesktop.ScreenSaver /ScreenSaver Lock'
 # kde-3)
@@ -23,24 +24,9 @@ SCREEN_LOCK="dbus-send --print-reply=literal --dest=org.enlightenment.wm.service
 # xdg-screensaver)
 #SCREEN_LOCK='xdg-screensaver lock'
 
+# to syslog
 log (){
     logger -t lid-action -- "$@"
-}
-
-#
-getDBusSessionAddress () {
-    log "I am: $(whoami)"
-    log "home is: $HOME"
-    log "DBUS_SESSION_BUS_ADDRESS is: $DBUS_SESSION_BUS_ADDRESS"
-    if [[ -z "$DBUS_SESSION_BUS_ADDRESS" ]]; then
-        log "get dbus session address"
-        # Looks like we are outside X
-        dbus_file=$(ls $HOME/.dbus/session-bus/ -t | head -1)
-        # Get the latest file in session-bus directory
-        . "$HOME/.dbus/session-bus/$dbus_file" && export DBUS_SESSION_BUS_ADDRESS
-        # and export a variable from it
-    fi
-    log "dbus session address is: $DBUS_SESSION_BUS_ADDRESS"
 }
 
 xsu () {
@@ -66,7 +52,7 @@ xsu () {
 # pass the command you want to execute on lid close to this function
 execute_command () {
     # this script only cares for LID close events
-    if [ "$CLOSE" == "close" ]
+    if [ "$close" == "close" ]
     then
         ## now sleep for a while and then check if the user decided
         ## to open the lid again
@@ -84,12 +70,7 @@ execute_command () {
         else
             # lock screen
             log "locking screen"
-            #xsu "DISPLAY=$DISPLAY DBUS_SESSION_BUS_ADDRESS=$DBUS_SESSION_BUS_ADDRESS DBUS_SESSION_BUS_PID=$DBUS_SESSION_BUS_PID $SCREEN_LOCK"
             xsu "$SCREEN_LOCK"
-            #log "sux - lars $SCREEN_LOCK"
-            # Failed to open connection to "session" message bus: Unable to autolaunch a dbus-daemon without a $DISPLAY for X11
-            #ERROR=$( { sux - lars -c "$SCREEN_LOCK" ; } 2>&1 )
-            #log $ERROR
             # take action
             log "$@"
             "$@"
@@ -98,6 +79,8 @@ execute_command () {
 }
 
 log "$@"
+# close or open?
+close=$3
 # check if we are on ac- or on battery-power
 on_ac_power
 if [ $? -ne 0 ]
@@ -109,7 +92,6 @@ then
 else
     # AC
     log "on AC power"
-    #log "xsu \"xset -display $DISPLAY dpms force off\""
     # switch-off screen
     execute_command xsu "xset -display $DISPLAY dpms force off"
 fi
