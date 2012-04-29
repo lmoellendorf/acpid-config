@@ -111,6 +111,6 @@ else
     # AC
     log "on AC power"
     # switch-off screen
-    execute_command xsu "xset -display $DISPLAY dpms force off"
+    execute_command xsu "xset dpms force off"
 fi
 
