@@ -78,7 +78,6 @@ execute_command () {
     fi
 }
 
-log $(who)
 log "$@"
 # close or open?
 close=$3
