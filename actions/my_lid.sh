@@ -86,7 +86,6 @@ execute_command () {
     fi
 }
 
-log "$(ps aux | grep xinit | awk '{print $1}' | head -n1)"
 log "$@"
 # close or open?
 close=$3
