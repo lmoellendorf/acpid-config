@@ -89,7 +89,9 @@ execute_command () {
             xsu "$SCREEN_LOCK"
             # take action
             log "$@"
-            "$@"
+            ERROR=$( { "$@"; } 2>&1 )
+            log "$ERROR"
+
         fi
     fi
 }
