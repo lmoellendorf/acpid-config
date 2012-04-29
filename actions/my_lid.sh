@@ -5,7 +5,8 @@
 DISPLAY=":0.0"
 # time in seconds to wait after lid has been closed
 TIMEOUT="3"
-# your username FIXME: Is there a dynamic way to get a current X user?
+# some broken login managers (e.g. lxdm) do not register the user in the utmp/wtmp file
+# if you use such a login manager put your username here
 XUSER="lars"
 ##
 # your screen lock command:
@@ -30,9 +31,16 @@ log (){
 }
 
 xsu () {
+    # get the X user dynamically
+    xuser="$(who | sed -ne "s/^\([^ ]*\)[ ]*:0.*/\1/p")"
+    log "detected X user is: $xuser"
+    if [[ -z "$xuser" ]]; then
+        # fallback to static username
+        xuser=$XUSER
+    fi
     if [[ -z "$DBUS_SESSION_BUS_ADDRESS" ]]; then
         # Looks like we are outside X
-        home=$(grep $XUSER /etc/passwd)
+        home=$(grep $xuser /etc/passwd)
         home=${home#*:*:*:*:*:}
         home=${home%:*}
         log "home is: $home"
@@ -44,8 +52,8 @@ xsu () {
         . "$home/.dbus/session-bus/$dbus_file" && export DBUS_SESSION_BUS_ADDRESS
     fi
     log "dbus session address is: $DBUS_SESSION_BUS_ADDRESS"
-    log "su -l -c \"DISPLAY=$DISPLAY $@\" $XUSER"
-    ERROR=$( { su -l -c "DISPLAY=$DISPLAY $@" $XUSER; } 2>&1 )
+    log "su -l -c \"DISPLAY=$DISPLAY $@\" $xuser"
+    ERROR=$( { su -l -c "DISPLAY=$DISPLAY $@" $xuser; } 2>&1 )
     log "$ERROR"
 }
 
