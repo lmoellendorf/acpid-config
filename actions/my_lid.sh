@@ -9,6 +9,8 @@ TIMEOUT="3"
 # if you use such a login manager put your username here
 XUSER="lars"
 ##
+# your suspend command
+SUSPEND="pm-suspend"
 # your screen lock command:
 # enlightenment)
 SCREEN_LOCK='enlightenment_remote -desktop-lock'
@@ -96,7 +98,7 @@ then
     # BATTERY
     log "on battery power"
     # suspend to ram
-    execute_command pm-suspend
+    execute_command $SUSPEND
 else
     # AC
     log "on AC power"
