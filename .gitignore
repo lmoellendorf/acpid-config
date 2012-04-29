@@ -10,9 +10,10 @@ actions/lm_*
 events/pmg_*
 actions/pmg_*
 
-# vi
+# vi(m)
 *.swp
 *~
+*.swo
 
 # eclipse
 .project
