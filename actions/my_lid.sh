@@ -11,11 +11,11 @@ XUSER="lars"
 ##
 # your suspend command
 # pm-utils
-#SUSPEND="pm-suspend"
+SUSPEND="pm-suspend"
 # plain echo to /proc/acpi/sleep
 #SUSPEND="echo 3 > /proc/acpi/sleep"
 # plain echo to /sys/power/state
-SUSPEND='echo -n mem > /sys/power/state'
+#SUSPEND='echo -n mem > /sys/power/state'
 ##
 # your screen lock command:
 # enlightenment)
@@ -106,6 +106,7 @@ then
     # BATTERY
     log "on battery power"
     # suspend to ram
+    # FIXME: echo redirection does not work this way - will write a wrapper function instead.
     execute_command $SUSPEND
 else
     # AC
