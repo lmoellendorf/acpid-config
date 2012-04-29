@@ -10,7 +10,13 @@ TIMEOUT="3"
 XUSER="lars"
 ##
 # your suspend command
-SUSPEND="pm-suspend"
+# pm-utils
+#SUSPEND="pm-suspend"
+# plain echo to /proc/acpi/sleep
+#SUSPEND="echo 3 > /proc/acpi/sleep"
+# plain echo to /sys/power/state
+SUSPEND='echo -n mem > /sys/power/state'
+##
 # your screen lock command:
 # enlightenment)
 SCREEN_LOCK='enlightenment_remote -desktop-lock'
