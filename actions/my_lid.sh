@@ -13,7 +13,7 @@ XUSER="lars"
 # pm-utils
 #SUSPEND="pm-suspend"
 # plain echo to /sys or /proc file
-SUSPEND="s2r"
+SUSPEND="suspend_to_ram"
 ##
 # your screen lock command:
 # enlightenment)
@@ -65,17 +65,17 @@ xsu () {
 }
 
 # suspend to ram
-s2r () {
-    # look for deprecated /proc/acpi file
-    if [[ -e /proc/acpi/sleep ]]
-    then
-        log "echo 3 > /proc/acpi/sleep"
-        echo 3 > /proc/acpi/sleep
-        # look for /sys file
-    elif [[ -e /sys/power/state ]]
+suspend_to_ram () {
+    # look for /sys file
+    if [[ -e /sys/power/state ]]
     then
         log "echo -n mem > /sys/power/state"
         echo -n mem > /sys/power/state
+    elif [[ -e /proc/acpi/sleep ]]
+    then
+        # try deprecated /proc/acpi file
+        log "echo 3 > /proc/acpi/sleep"
+        echo 3 > /proc/acpi/sleep
     else
         # try to invoke pm-utils
         log "pm-suspend"
