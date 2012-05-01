@@ -36,6 +36,7 @@ log (){
     logger -t lid-action -- "$@"
 }
 
+# get access to X and dBus session
 xsu () {
     # get the X user dynamically
     xuser="$(who | sed -ne "s/^\([^ ]*\)[ ]*:0.*/\1/p")"
@@ -63,18 +64,21 @@ xsu () {
     log "$ERROR"
 }
 
+# suspend to ram
 s2r () {
     # look for deprecated /proc/acpi file
     if [[ -e /proc/acpi/sleep ]]
     then
-# plain echo to /proc/acpi/sleep
+        log "echo 3 > /proc/acpi/sleep"
         echo 3 > /proc/acpi/sleep
-    # look for /sys file
+        # look for /sys file
     elif [[ -e /sys/power/state ]]
     then
+        log "echo -n mem > /sys/power/state"
         echo -n mem > /sys/power/state
     else
         # try to invoke pm-utils
+        log "pm-suspend"
         pm-suspend
     fi
 }
@@ -120,7 +124,6 @@ then
     # BATTERY
     log "on battery power"
     # suspend to ram
-    # FIXME: echo redirection does not work this way - will write a wrapper function instead.
     execute_command $SUSPEND
 else
     # AC
