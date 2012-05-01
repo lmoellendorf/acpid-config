@@ -11,11 +11,9 @@ XUSER="lars"
 ##
 # your suspend command
 # pm-utils
-SUSPEND="pm-suspend"
-# plain echo to /proc/acpi/sleep
-#SUSPEND="echo 3 > /proc/acpi/sleep"
-# plain echo to /sys/power/state
-#SUSPEND='echo -n mem > /sys/power/state'
+#SUSPEND="pm-suspend"
+# plain echo to /sys or /proc file
+SUSPEND="s2r"
 ##
 # your screen lock command:
 # enlightenment)
@@ -63,6 +61,22 @@ xsu () {
     log "su -l -c \"DISPLAY=$DISPLAY $@\" $xuser"
     ERROR=$( { su -l -c "DISPLAY=$DISPLAY $@" $xuser; } 2>&1 )
     log "$ERROR"
+}
+
+s2r () {
+    # look for deprecated /proc/acpi file
+    if [[ -e /proc/acpi/sleep ]]
+    then
+# plain echo to /proc/acpi/sleep
+        echo 3 > /proc/acpi/sleep
+    # look for /sys file
+    elif [[ -e /sys/power/state ]]
+    then
+        echo -n mem > /sys/power/state
+    else
+        # try to invoke pm-utils
+        pm-suspend
+    fi
 }
 
 # pass the command you want to execute on lid close to this function
