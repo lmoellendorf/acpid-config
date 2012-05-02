@@ -30,6 +30,8 @@ SCREEN_LOCK='enlightenment_remote -desktop-lock'
 #SCREEN_LOCK='xscreensaver-command -lock'
 # xdg-screensaver)
 #SCREEN_LOCK='xdg-screensaver lock'
+# slock)
+#SCREEN_LOCK='slock'
 
 # to syslog
 log (){
