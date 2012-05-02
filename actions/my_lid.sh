@@ -38,6 +38,12 @@ log (){
     logger -t lid-action -- "$@"
 }
 
+catchError () {
+    ERROR=$( { $@; } 2>&1 )
+    log "$ERROR"
+}
+
+
 # get access to X and dBus session
 xsu () {
     # get the X user dynamically
@@ -62,8 +68,10 @@ xsu () {
     fi
     log "dbus session address is: $DBUS_SESSION_BUS_ADDRESS"
     log "su -l -c \"DISPLAY=$DISPLAY $@\" $xuser"
-    ERROR=$( { su -l -c "DISPLAY=$DISPLAY $@" $xuser; } 2>&1 )
-    log "$ERROR"
+    #ERROR=$( { su -l -c "DISPLAY=$DISPLAY $@" $xuser; } 2>&1 )
+    #log "$ERROR"
+    #catchError su -l -c "DISPLAY=$DISPLAY $@" $xuser
+    catchError su -l -c "$@" $xuser
 }
 
 # suspend to ram
@@ -109,9 +117,9 @@ execute_command () {
             xsu "$SCREEN_LOCK"
             # take action
             log "$@"
-            ERROR=$( { "$@"; } 2>&1 )
-            log "$ERROR"
-
+            #ERROR=$( { "$@"; } 2>&1 )
+            #log "$ERROR"
+            catchError $@
         fi
     fi
 }
