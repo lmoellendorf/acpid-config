@@ -70,8 +70,7 @@ xsu () {
     log "su -l -c \"DISPLAY=$DISPLAY $@\" $xuser"
     #ERROR=$( { su -l -c "DISPLAY=$DISPLAY $@" $xuser; } 2>&1 )
     #log "$ERROR"
-    #catchError su -l -c "DISPLAY=$DISPLAY $@" $xuser
-    catchError su -l -c "$@" $xuser
+    catchError su -l -c "DISPLAY=$DISPLAY $@" $xuser
 }
 
 # suspend to ram
