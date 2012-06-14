@@ -47,10 +47,6 @@ xsu () {
     grep "^${xuser}:*" /etc/passwd || \
         log "falling back to static username $XUSER"; \
         xuser=$XUSER
-    #if [[ -z "$xuser" ]]; then
-        # fallback to static username
-    #    xuser=$XUSER
-    #fi
     if [[ -z "$DBUS_SESSION_BUS_ADDRESS" ]]; then
         # Looks like we are outside X
         home=$(grep $xuser /etc/passwd)
