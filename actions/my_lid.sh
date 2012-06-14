@@ -44,7 +44,7 @@ xsu () {
     xuser="$(who | sed -ne "0,/^\([^ ]*\)[ ]*:0.*/s//\1/p")"
     log "detected X user is: $xuser"
     # check if user seems to be valid
-    grep "^${xuser}:*" /etc/passwd && \
+    grep "^${xuser}:*" /etc/passwd || \
         log "falling back to static username $XUSER"; \
         xuser=$XUSER
     #if [[ -z "$xuser" ]]; then
