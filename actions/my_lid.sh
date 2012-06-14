@@ -41,12 +41,16 @@ log (){
 # get access to X and dBus session
 xsu () {
     # get the X user dynamically
-    xuser="$(who | sed -ne "s/^\([^ ]*\)[ ]*:0.*/\1/p")"
+    xuser="$(who | sed -ne "0,/^\([^ ]*\)[ ]*:0.*/s//\1/p")"
     log "detected X user is: $xuser"
-    if [[ -z "$xuser" ]]; then
-        # fallback to static username
+    # check if user seems to be valid
+    grep "^${xuser}:*" /etc/passwd || \
+        # fallback to static username \
         xuser=$XUSER
-    fi
+    #if [[ -z "$xuser" ]]; then
+        # fallback to static username
+    #    xuser=$XUSER
+    #fi
     if [[ -z "$DBUS_SESSION_BUS_ADDRESS" ]]; then
         # Looks like we are outside X
         home=$(grep $xuser /etc/passwd)
