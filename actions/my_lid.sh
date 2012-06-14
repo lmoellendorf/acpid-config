@@ -45,7 +45,7 @@ xsu () {
     log "detected X user is: $xuser"
     # check if user seems to be valid
     grep "^${xuser}:*" /etc/passwd || \
-        # fallback to static username \
+        log "falling back to static username $XUSER"; \
         xuser=$XUSER
     #if [[ -z "$xuser" ]]; then
         # fallback to static username
