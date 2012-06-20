@@ -49,9 +49,7 @@ xsu () {
         xuser=$XUSER
     if [[ -z "$DBUS_SESSION_BUS_ADDRESS" ]]; then
         # Looks like we are outside X
-        home=$(grep $xuser /etc/passwd)
-        home=${home#*:*:*:*:*:}
-        home=${home%:*}
+        home=$(awk -v user=${xuser} -F":" '{if ($1 == user) {print $6}}' /etc/passwd)
         log "home is: $home"
         # Get the latest file in session-bus directory
         dbus_file=$(ls $home/.dbus/session-bus/ -t | head -1)
