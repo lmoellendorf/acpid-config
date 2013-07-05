@@ -51,6 +51,7 @@ SCREEN_LOCK='enlightenment_remote -desktop-lock'
 #SCREEN_LOCK='xdg-screensaver lock'
 # slock)
 #SCREEN_LOCK='slock'
+PRE_SUSPEND_HOOK=/home/lars/bin/fixATIpxp.sh
 
 # to syslog
 log (){
@@ -84,6 +85,7 @@ xsu () {
 
 # suspend to ram
 suspend_to_ram () {
+    ${PRE_SUSPEND_HOOK}
     # look for /sys file
     if [[ -e /sys/power/state ]]
     then
