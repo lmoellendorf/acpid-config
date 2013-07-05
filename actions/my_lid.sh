@@ -52,6 +52,7 @@ SCREEN_LOCK='enlightenment_remote -desktop-lock'
 # slock)
 #SCREEN_LOCK='slock'
 PRE_SUSPEND_HOOK=/home/lars/bin/fixATIpxp.sh
+POST_SUSPEND_HOOK="logger -t post-suspend -- alive again"
 
 # to syslog
 log (){
@@ -101,6 +102,7 @@ suspend_to_ram () {
         log "pm-suspend"
         pm-suspend
     fi
+    ${POST_SUSPEND_HOOK}
 }
 
 # pass the command you want to execute on lid close to this function
