@@ -51,8 +51,8 @@ SCREEN_LOCK='enlightenment_remote -desktop-lock'
 #SCREEN_LOCK='xdg-screensaver lock'
 # slock)
 #SCREEN_LOCK='slock'
-PRE_SUSPEND_HOOK=/home/lars/bin/fixATIpxp.sh
-POST_SUSPEND_HOOK="logger -t post-suspend -- alive again"
+PRE_SUSPEND_HOOK=/home/lars/bin/preSuspend.sh
+POST_SUSPEND_HOOK=/home/lars/bin/postSuspend.sh
 
 # to syslog
 log (){
