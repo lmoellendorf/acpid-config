@@ -80,8 +80,8 @@ xsu () {
         . "$home/.dbus/session-bus/$dbus_file" && export DBUS_SESSION_BUS_ADDRESS
     fi
     log "dbus session address is: $DBUS_SESSION_BUS_ADDRESS"
-    log "su -l -c \"DISPLAY=$DISPLAY $@\" $xuser"
-    su -l -c "DISPLAY=$DISPLAY $@" $xuser
+    log "su -c \"DISPLAY=$DISPLAY $@\" $xuser"
+    su -c "DISPLAY=$DISPLAY $@" $xuser
 }
 
 # suspend to ram
