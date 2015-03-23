@@ -50,7 +50,7 @@ SCREEN_LOCK='enlightenment_remote -desktop-lock'
 # xdg-screensaver)
 #SCREEN_LOCK='xdg-screensaver lock'
 # slock)
-#SCREEN_LOCK='slock'
+SCREEN_LOCK='slock'
 #PRE_SUSPEND_HOOK=/home/lars/bin/preSuspend.sh
 POST_SUSPEND_HOOK=/home/lars/bin/postSuspend.sh
 
