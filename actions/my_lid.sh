@@ -81,7 +81,7 @@ xsu () {
     fi
     log "dbus session address is: $DBUS_SESSION_BUS_ADDRESS"
     log "su -c \"DISPLAY=$DISPLAY $@\" $xuser"
-    su -c "DISPLAY=$DISPLAY $@" $xuser
+    su -c "DISPLAY=$DISPLAY $@&" $xuser
 }
 
 # suspend to ram
