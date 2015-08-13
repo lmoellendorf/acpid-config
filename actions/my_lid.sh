@@ -32,11 +32,11 @@ XUSER="lars"
 # pm-utils
 #SUSPEND="pm-suspend"
 # plain echo to /sys or /proc file
-SUSPEND="suspend_to_ram"
+SUSPEND="suspend_to_disk"
 ##
 # your screen lock command:
 # enlightenment)
-SCREEN_LOCK='enlightenment_remote -desktop-lock'
+#SCREEN_LOCK='enlightenment_remote -desktop-lock'
 # or
 #SCREEN_LOCK="dbus-send --print-reply=literal --dest=org.enlightenment.wm.service /org/enlightenment/wm/RemoteObject org.enlightenment.wm.Desktop.Lock"
 # kde-4)
@@ -84,25 +84,38 @@ xsu () {
     su -c "DISPLAY=$DISPLAY $@&" $xuser
 }
 
-# suspend to ram
-suspend_to_ram () {
+# suspend
+suspend_to_x () {
+    # $1: mem/disk
+    # $2: 3/4
+    # $3: pm-suspend/pm-hibernate
     ${PRE_SUSPEND_HOOK}
     # look for /sys file
     if [[ -e /sys/power/state ]]
     then
-        log "echo -n mem > /sys/power/state"
-        echo -n mem > /sys/power/state
+        log "echo -n $1 > /sys/power/state"
+        echo -n $1 > /sys/power/state
     elif [[ -e /proc/acpi/sleep ]]
     then
         # try deprecated /proc/acpi file
-        log "echo 3 > /proc/acpi/sleep"
-        echo 3 > /proc/acpi/sleep
+        log "echo $2 > /proc/acpi/sleep"
+        echo $2 > /proc/acpi/sleep
     else
         # try to invoke pm-utils
-        log "pm-suspend"
-        pm-suspend
+        log "$3"
+        $3
     fi
     ${POST_SUSPEND_HOOK}
+}
+
+# suspend to disk
+suspend_to_disk () {
+  suspend_to_x disk 4 pm-hibernate
+}
+
+# suspend to ram
+suspend_to_ram () {
+  suspend_to_x mem 3 pm-suspend
 }
 
 # pass the command you want to execute on lid close to this function
@@ -145,7 +158,7 @@ if [ $? -ne 0 ]
 then
     # BATTERY
     log "on battery power"
-    # suspend to ram
+    # suspend
     execute_command $SUSPEND
 else
     # AC
