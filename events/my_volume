@@ -1,0 +1,2 @@
+event=button[ /]volume*
+action=/etc/acpi/actions/my_volume.sh %e
