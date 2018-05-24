@@ -1,0 +1,3 @@
+# cd/play CDPLAY 00000080 00000000 K
+event=cd[ /]*
+action=/etc/acpi/actions/my_cdplay.sh %e
